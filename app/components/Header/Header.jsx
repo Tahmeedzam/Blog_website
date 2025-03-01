@@ -1,6 +1,7 @@
 import { House, Scroll, MessageCircle } from 'lucide-react'
 import LoginButton from "./LoginButton"
 import React from 'react'
+import AuthContextProvider from '@/lib/contexts/AuthContext'
 
 const Header = () => {
     return (
@@ -17,8 +18,9 @@ const Header = () => {
                     <MessageCircle />
                     Contact us</li>
             </ul>
-
-            <LoginButton />
+            <AuthContextProvider>
+                <LoginButton />
+            </AuthContextProvider>
         </nav>
     )
 }
