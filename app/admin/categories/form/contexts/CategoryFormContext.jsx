@@ -1,17 +1,25 @@
 "use client"
 
 import { createContext, useContext, useState } from "react";
+import { createNewCategory, deleteCategory, updateCategory } from "../../../../../lib/firebase/category/write";
+import { getCategory } from "../../../../../lib/firebase/category/read";
+import { useRouter } from "next/navigation";
+
 
 const CategoryFormContext = createContext();
 
 export default function CategoryFormContextProvider({ children }) {
+
+    const router = useRouter();
+
+
     const [data, setData] = useState({});
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState(null);
     const [isDone, setIsDone] = useState(false);
-    const [image, setImage] = useState(null);
 
     const handleData = (key, value) => {
+        setIsDone(false)
         setData({
             ...data,
             [key]: value,
@@ -23,9 +31,52 @@ export default function CategoryFormContextProvider({ children }) {
         setIsLoading(true)
         setIsDone(false)
         try {
-            //Todo: Add data to firebase
-            //Todo: Add image to storage
+            await createNewCategory({ data: data });
             setIsDone(true)
+        } catch (error) {
+            setError(error?.message)
+        }
+        setIsLoading(false)
+    }
+
+    const handleUpdate = async () => {
+        setError(null)
+        setIsLoading(true)
+        setIsDone(false)
+        try {
+            await updateCategory({ data: data });
+            setIsDone(true)
+        } catch (error) {
+            setError(error?.message)
+        }
+        setIsLoading(false)
+    }
+
+    const handleDelete = async (id) => {
+        setError(null)
+        setIsLoading(true)
+        setIsDone(false)
+        try {
+            await deleteCategory(id);
+            setIsDone(true)
+            router.push('/admin/categories');
+        } catch (error) {
+            setError(error?.message)
+        }
+        setIsLoading(false)
+    }
+
+    const fetchData = async (id) => {
+        setError(null)
+        setIsLoading(true)
+        setIsDone(false)
+        try {
+            const res = await getCategory(id);
+            if (res.exists()) {
+                setData(res.data());
+            } else {
+                throw new Error(`No Category found from id ${id}`)
+            }
         } catch (error) {
             setError(error?.message)
         }
@@ -40,8 +91,9 @@ export default function CategoryFormContextProvider({ children }) {
             isDone,
             handleData,
             handleCreate,
-            image,
-            setImage,
+            handleUpdate,
+            handleDelete,
+            fetchData,
         }}
     >
         {children}
