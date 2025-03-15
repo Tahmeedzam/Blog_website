@@ -1,11 +1,10 @@
 import Image from "next/image";
-
+import PostListView from "../app/components/PostListView";
 
 export default function Home() {
   return (
     <main>
-      
-      <h1>Blog Website</h1>
+      <PostListView/>
     </main>
   );
 }

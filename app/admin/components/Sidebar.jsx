@@ -4,11 +4,6 @@ import Link from 'next/link'
 export default function Sidebar() {
     const link = [
         {
-            name: 'Dashboard',
-            link: '/admin',
-            icon: <LayoutDashboard />
-        },
-        {
             name: 'Posts',
             link: '/admin/posts',
             icon: <LayoutList />

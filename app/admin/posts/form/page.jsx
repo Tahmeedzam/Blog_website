@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { usePostForm } from "./contexts/PostFormContext";
 import { useSearchParams } from "next/navigation";
 import { useCategories } from "../../../../lib/firebase/category/read";
+import { useAuthors } from "../../../../lib/firebase/author/read"
 import JoditEditor from "jodit-react";
 import { RTEField } from "../form/components/RTEField"
 import { Lock } from "lucide-react";
@@ -101,6 +102,8 @@ export default function Page() {
 
                 <SelectCategoryField />
                 {error && <p className="text-red-500 text-sm">{error}</p>}
+                <SelectAuthorField />
+                {error && <p className="text-red-500 text-sm">{error}</p>}
 
 
                 {!isDone && <button
@@ -162,6 +165,30 @@ function SelectCategoryField() {
                 return <option value={item?.id}>
                     {item?.name}
                 </option>
+            })}
+        </select>
+    </div>
+}
+function SelectAuthorField() {
+    const {
+        data,
+        handleData,
+    } = usePostForm();
+    const { data: authors } = useAuthors();
+    return <div className="flex flex-col gap-2">
+        <label className="text-sm text-gray-500">Authors  <span className="text-red-500">*</span> </label>
+        <select
+            className="px-4 py-2 rounded-full border bg-gray-50"
+            name="authorId"
+            id="authorId"
+            value={data?.authorId}
+            onChange={(e) => {
+                handleData('authorId', e.target.value)
+            }}
+            required>
+            <option value="">Select Author</option>
+            {authors && authors?.map((item) => {
+                return <option value={item?.id}>{item?.name}</option>
             })}
         </select>
     </div>
