@@ -6,7 +6,6 @@ import { useSearchParams } from "next/navigation";
 import { useCategories } from "../../../../lib/firebase/category/read";
 import { useAuthors } from "../../../../lib/firebase/author/read"
 import JoditEditor from "jodit-react";
-import { RTEField } from "../form/components/RTEField"
 import { Lock } from "lucide-react";
 
 export default function Page() {
