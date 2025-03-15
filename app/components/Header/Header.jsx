@@ -28,11 +28,8 @@ const Header = () => {
     }, []);
 
     const handleDashboardClick = () => {
-        if (user) {
-            router.push('/admin/posts');
-        } else {
-            handleSignInWithGoogle();
-        }
+        router.push('/admin/posts');
+
     };
 
     return (
