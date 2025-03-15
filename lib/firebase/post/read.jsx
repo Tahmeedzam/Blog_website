@@ -5,11 +5,11 @@ import { getAuth } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
 import useSWRSubscription from 'swr/subscription'
 
-export function useAuthors() {
+export function usePosts() {
     const db = getFirestore();
     const auth = getAuth();
 
-    const { data, error } = useSWRSubscription(['authors'], ([path], { next }) => {
+    const { data, error } = useSWRSubscription(['posts'], ([path], { next }) => {
         const ref = collection(db, path);
 
         const unsub = onSnapshot(ref, (snaps) => {
@@ -27,7 +27,7 @@ export function useAuthors() {
     }
 }
 
-export const getAuthors = async (id) => {
+export const getPost = async (id) => {
     const db = getFirestore();
-    return await getDoc(doc(db, `authors/${id}`));
+    return await getDoc(doc(db, `posts/${id}`));
 }
